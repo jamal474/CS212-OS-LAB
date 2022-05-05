@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage[a4paper, total={7in, 8in}]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyvrb,xcolor}
+\usepackage[latin1]{inputenc}
+
+\title{CS212: Assignment 3}
+\author{Md Shabbir Jamal}
+\date{Department of Computer Science and Engineering\\
+BIT, Mesra, Ranchi\\
+btech10026.20@bitmesra.ac.in
+}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    
+\item {{\large WAP to schedule process according to {\textbf SRTF } / Shortest Remaining Time First scheduling algorithm}
+\begin{verbatim}
+    #include<iostream>
+
+using namespace std;
+int main()
+{
+    int a[10],b[10],x[10];
+    int waiting[10],turnaround[10],completion[10];
+    int i,j,smallest,count=0,time,n;
+    double avg=0,tt=0,end;
+
+    cout<<"\nEnter the number of Processes : "; 
+    cin>>n;
+    cout<<"Enter Process Details : \n";
+    for(i=0; i<n; i++)
+    {
+        cout<<"p["<<i+1<<"] : ";
+        cout<<"Arrival time : ";  
+        cin>>a[i];
+        cout<<"       ";
+        cout<<"Burst time : ";
+        cin>>b[i];
+    }
+    for(i=0; i<n; i++)
+        x[i]=b[i];
+
+    b[9]=9999;
+    for(time=0; count!=n; time++)
+    {
+        smallest=9;
+        for(i=0; i<n; i++)
+        {
+            if(a[i]<=time && b[i]<b[smallest] && b[i]>0 )
+                smallest=i;
+        }
+        b[smallest]--;
+
+        if(b[smallest]==0)
+        {
+            count++;
+            end=time+1;
+            completion[smallest] = end;
+            waiting[smallest] = end - a[smallest] - x[smallest];
+            turnaround[smallest] = end - a[smallest];
+        }
+    }
+    for(i=0; i<n; i++)
+    {
+        avg = avg + waiting[i];
+        tt = tt + turnaround[i];
+    }
+    cout<<"\nResult : ";
+    cout<<"Average waiting time : "<<avg<<endl;
+    cout<<"Average Turnaround time : "<<tt;
+}
+
+\end{verbatim}
+\textbf{Output}
+\begin{verbatim}
+    
+    Enter the number of Processes : 5
+    Enter Process Details :
+    p[1] : Arrival time : 3
+       Burst time : 1
+    p[2] : Arrival time : 1
+       Burst time : 4
+    p[3] : Arrival time : 4
+       Burst time : 2
+    p[4] : Arrival time : 0
+       Burst time : 6
+    p[5] : Arrival time : 2
+       Burst time : 3
+
+Result : Average waiting time : 19
+Average Turnaround time : 35
+
+\end{verbatim}
+}
+
+\end{enumerate}
+\end{document}

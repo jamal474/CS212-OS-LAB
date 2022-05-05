@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage[a4paper, total={7in, 8in}]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyvrb,xcolor}
+\usepackage[latin1]{inputenc}
+
+\title{CS212: Assignment 7}
+\author{Md Shabbir Jamal}
+\date{Department of Computer Science and Engineering\\
+BIT, Mesra, Ranchi\\
+btech10026.20@bitmesra.ac.in
+}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    
+\item {{\large What is Beladys anamoly in case of page replacement algorithm?Please illustrate this anomaly using the following reference string. 3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4}
+\begin{verbatim}
+In ordinary settings it is expected that increasing number of Page Frames would decrease
+number of page faults, but it so happens that number of page faults increase in some 
+techniques like FIFO.
+
+    For Demonstration :-
+    let the reference string be : 3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4
+
+    At Frames : 3
+
+                Fault : 9
+
+    At Frames : 4
+
+                Fault : 10
+    
+
+    
+\end{verbatim}
+}
+\end{enumerate}
+\end{document}

@@ -1,0 +1,183 @@
+\documentclass{article}
+\usepackage[a4paper, tot_al={7in, 8in}]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyvrb,xcolor}
+\usepackage[latin1]{inputenc}
+
+\title{CS212: Assignment 2}
+\author{Md Shabbir Jamal}
+\date{Department of Computer Science and Engineering\\
+BIT, Mesra, Ranchi\\
+btech10026.20@bitmesra.ac.in
+}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    
+\item {{\large WAP to schedule process according to {\textbf SJF } / Shortest Job First scheduling algorithm}
+\begin{verbatim}
+    #include<iostream>
+    #include<algorithm>
+    #include<vector>
+    #include<string>
+    using namespace std;
+    
+    //structure to store process det_ail
+    struct Process
+    {
+        string name;
+        int arrival_time;
+        int burst_time;
+    };
+    
+    //helpful in sorting the process by arrival time
+    bool a_t_sort(Process P,Process Q)
+    {
+        return P.arrival_time < Q.arrival_time; 
+    }
+    
+    bool b_t_sort(Process P,Process Q)
+    {
+        return P.burst_time < Q.burst_time;
+    }
+    
+    void input_process(vector<Process> &Proc)
+    {
+        //t_aking input 
+        for(int i = 0;i<Proc.size();i++)
+        {
+            cout<<"p["<<i+1<<"] : ";
+            Proc[i].name = to_string(i+1);
+    
+            cout<<"Arrival time : ";
+            cin>>Proc[i].arrival_time;
+            cout<<"       ";
+    
+            cout<<"Burst Time : ";
+            cin>>Proc[i].burst_time;
+            cout<<"\n";
+        }
+    }
+    
+    void Gantt_chart_n_Result(vector<Process> &Proc)
+    {
+        //Gantt Chart
+        sort(Proc.begin(),Proc.end(),a_t_sort);
+        
+        int ttime=0;
+        int j;
+        vector<int> t_array(Proc.size());
+        if(Proc[0].arrival_time != 0)
+        {
+            ttime  = Proc[0].arrival_time;
+        }
+        for(int i=0;i<Proc.size();i++)
+        {
+            j=i;
+            while(Proc[j].arrival_time <= ttime && j != Proc.size())
+            {
+                j++;
+            }
+            sort(Proc.begin()+i,Proc.begin()+j,b_t_sort);
+            t_array[i]=ttime;
+            ttime += Proc[i].burst_time;
+        }
+        t_array[Proc.size()] = ttime;
+    
+        cout<<"\nGantt Chart : "<<"\n\n";
+        if(Proc[0].arrival_time != 0)
+        {
+            cout<<"|||";
+        }
+        for (int i=0; i<Proc.size(); i++)
+        {
+            cout<<" |||P["<< Proc[i].name << "]|||"; 
+        }
+        cout<<"\n";
+        if(Proc[0].arrival_time != 0)
+        {
+            cout<<"0  ";
+        }
+        for (int i=0; i < Proc.size()+1 ; i++)
+        {
+            cout << t_array[i] << "          "; 
+        }
+        
+        cout<<"\n\nResults : \n\n";
+    
+        //Waiting Time
+        double waiting_time = 0.0;
+        int i = 0;
+        for (int i = 0;i<Proc.size();i++)
+        {
+            waiting_time = waiting_time + (t_array[i] - Proc[i].arrival_time);
+        }
+         cout<<"Average Waiting Time : "<<waiting_time/Proc.size()<<"\n";
+    
+        //Turnaround Time
+        double turnaround_time = 0.0;
+    
+        for(int i = 0;i < Proc.size();i++)
+        {
+            turnaround_time = turnaround_time + t_array[i] - Proc[i].arrival_time + Proc[i].burst_time;
+        }
+       cout<<"Average Turaround Time : "<<turnaround_time/Proc.size()<<"\n";
+    }
+    
+    int main()
+    {
+        int n;
+        cout<<"\t\tEnter Process Det_ails : "<<"\n";
+        cout<<"Enter the number of Process : ";
+        cin>>n;
+    
+        //vector to store processes
+        vector<Process> Proc(n);
+    
+        //input process det_ail
+        input_process(Proc);
+    
+        //Calculate Gantt Chart and results
+        Gantt_chart_n_Result(Proc);
+        
+        return 0;
+    }
+
+\end{verbatim}
+\textbf{Output}
+\begin{verbatim}
+
+    Enter Process Det_ails : 
+    Enter the number of Process : 4
+    p[1] : Arrival time : 0
+           Burst Time : 5
+    
+    p[2] : Arrival time : 1
+           Burst Time : 3
+    
+    p[3] : Arrival time : 2
+           Burst Time : 3
+    
+    p[4] : Arrival time : 4
+           Burst Time : 1
+    
+    
+    Gantt Chart :
+    
+     |||P[1]||| |||P[4]||| |||P[2]||| |||P[3]|||
+    0          5          6          9          12
+    
+    Results :
+    
+    Average Waiting Time : 3.25
+    Average Turaround Time : 6.25
+
+\end{verbatim}
+}
+
+\end{enumerate}
+\end{document}
